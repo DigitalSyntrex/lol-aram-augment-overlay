@@ -1,4 +1,6 @@
+using System;
 using System.Windows;
+using System.Threading.Tasks;
 using AugmentOverlay.Services;
 using AugmentOverlay.Models;
 
@@ -6,9 +8,9 @@ namespace AugmentOverlay
 {
     public partial class MainWindow : Window
     {
-        private ScreenCaptureService _screenCapture;
-        private ChampionDetectionService _championDetection;
-        private AugmentRecommendationService _augmentService;
+        private ScreenCaptureService? _screenCapture;
+        private ChampionDetectionService? _championDetection;
+        private AugmentRecommendationService? _augmentService;
 
         public MainWindow()
         {
@@ -31,11 +33,13 @@ namespace AugmentOverlay
             {
                 try
                 {
+                    if (_screenCapture == null) break;
+
                     // Capture screen
                     var screenshot = _screenCapture.CaptureScreen();
 
                     // Detect champion from screen
-                    var champion = _championDetection.DetectChampion(screenshot);
+                    var champion = _championDetection?.DetectChampion(screenshot);
                     if (champion != null)
                     {
                         ChampionName.Text = champion.Name;
@@ -46,7 +50,7 @@ namespace AugmentOverlay
                     if (augments.Count > 0)
                     {
                         // Get recommendation
-                        var recommendation = _augmentService.GetBestAugment(champion?.Name, augments);
+                        var recommendation = _augmentService?.GetBestAugment(champion?.Name, augments);
                         if (recommendation != null)
                         {
                             AugmentName.Text = recommendation.Name;

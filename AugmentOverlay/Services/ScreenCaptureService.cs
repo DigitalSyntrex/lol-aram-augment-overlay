@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 using OpenCvSharp;
 using Tesseract;
@@ -41,40 +43,58 @@ namespace AugmentOverlay.Services
 
             try
             {
-                // Convert bitmap to Mat for OpenCV processing
-                Mat? mat = Cv2.ImDecode(BitmapToArray(screenshot), ImreadModes.Color);
-                if (mat == null) return augments;
+                // Define augment selection UI region (typically bottom-center of screen)
+                // Adjust these coordinates based on your LoL UI layout
+                var roiX = screenshot.Width / 4;
+                var roiY = screenshot.Height - 400;
+                var roiWidth = screenshot.Width / 2;
+                var roiHeight = 350;
 
-                // Look for augment UI region (typically bottom-center of screen)
-                // Adjust these coordinates based on LoL UI layout
-                var roi = new OpenCvSharp.Rect(
-                    screenshot.Width / 4,
-                    screenshot.Height - 400,
-                    screenshot.Width / 2,
-                    350
-                );
+                // Extract the region of interest
+                var roi = new Bitmap(roiWidth, roiHeight);
+                var graphics = Graphics.FromImage(roi);
+                graphics.DrawImage(screenshot, 0, 0, new Rectangle(roiX, roiY, roiWidth, roiHeight), GraphicsUnit.Pixel);
+                graphics.Dispose();
 
-                var roiMat = new Mat(mat, roi);
+                // Save ROI to temporary file for OCR
+                var tempPath = Path.Combine(Path.GetTempPath(), "augment_region.png");
+                roi.Save(tempPath, ImageFormat.Png);
+                roi.Dispose();
 
-                // Use OCR to detect augment names
-                using (var pix = Pix.LoadFromFile("temp_augment.png"))
+                // Use Tesseract OCR to detect augment names
+                using (var pix = Pix.LoadFromFile(tempPath))
                 {
                     if (pix != null && _tesseractEngine != null)
                     {
                         using (var page = _tesseractEngine.Process(pix))
                         {
                             var text = page.GetText();
+                            System.Diagnostics.Debug.WriteLine($"OCR detected text: {text}");
+
                             // Parse augment names from text
                             var lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (var line in lines)
                             {
-                                if (!string.IsNullOrWhiteSpace(line))
+                                var trimmedLine = line.Trim();
+                                if (!string.IsNullOrWhiteSpace(trimmedLine) && trimmedLine.Length > 2)
                                 {
-                                    augments.Add(new Augment { Name = line.Trim() });
+                                    augments.Add(new Augment 
+                                    { 
+                                        Id = trimmedLine.ToLower(),
+                                        Name = trimmedLine,
+                                        Description = $"Augment: {trimmedLine}"
+                                    });
+                                    System.Diagnostics.Debug.WriteLine($"Detected augment: {trimmedLine}");
                                 }
                             }
                         }
                     }
+                }
+
+                // Clean up temp file
+                if (File.Exists(tempPath))
+                {
+                    File.Delete(tempPath);
                 }
             }
             catch (Exception ex)
@@ -83,15 +103,6 @@ namespace AugmentOverlay.Services
             }
 
             return augments;
-        }
-
-        private byte[] BitmapToArray(Bitmap bitmap)
-        {
-            using (var ms = new System.IO.MemoryStream())
-            {
-                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                return ms.ToArray();
-            }
         }
     }
 }

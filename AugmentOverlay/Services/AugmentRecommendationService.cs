@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using AugmentOverlay.Models;
 
@@ -37,7 +39,7 @@ namespace AugmentOverlay.Services
             }
         }
 
-        public AugmentRecommendation GetBestAugment(string championName, List<Augment> availableAugments)
+        public AugmentRecommendation? GetBestAugment(string? championName, List<Augment> availableAugments)
         {
             if (string.IsNullOrEmpty(championName) || availableAugments == null || availableAugments.Count == 0)
             {

@@ -42,7 +42,8 @@ namespace AugmentOverlay.Services
             try
             {
                 // Convert bitmap to Mat for OpenCV processing
-                var mat = OpenCvSharp.BitmapConverter.ToMat(screenshot);
+                Mat? mat = Cv2.ImDecode(BitmapToArray(screenshot), ImreadModes.Color);
+                if (mat == null) return augments;
 
                 // Look for augment UI region (typically bottom-center of screen)
                 // Adjust these coordinates based on LoL UI layout
@@ -82,6 +83,15 @@ namespace AugmentOverlay.Services
             }
 
             return augments;
+        }
+
+        private byte[] BitmapToArray(Bitmap bitmap)
+        {
+            using (var ms = new System.IO.MemoryStream())
+            {
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return ms.ToArray();
+            }
         }
     }
 }

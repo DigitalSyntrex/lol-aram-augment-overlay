@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using OpenCvSharp;
@@ -10,7 +9,7 @@ namespace AugmentOverlay.Services
 {
     public class ScreenCaptureService
     {
-        private TesseractEngine _tesseractEngine;
+        private TesseractEngine? _tesseractEngine;
 
         public ScreenCaptureService()
         {
@@ -31,7 +30,7 @@ namespace AugmentOverlay.Services
             var screenHeight = Screen.PrimaryScreen.Bounds.Height;
             var bitmap = new Bitmap(screenWidth, screenHeight);
             var graphics = Graphics.FromImage(bitmap);
-            graphics.CopyFromScreen(0, 0, 0, 0, new Size(screenWidth, screenHeight));
+            graphics.CopyFromScreen(0, 0, 0, 0, new System.Drawing.Size(screenWidth, screenHeight));
             return bitmap;
         }
 
@@ -42,11 +41,11 @@ namespace AugmentOverlay.Services
             try
             {
                 // Convert bitmap to Mat for OpenCV processing
-                var mat = BitmapConverter.ToMat(screenshot);
+                var mat = OpenCvSharp.BitmapConverter.ToMat(screenshot);
 
                 // Look for augment UI region (typically bottom-center of screen)
                 // Adjust these coordinates based on LoL UI layout
-                var roi = new Rect(
+                var roi = new OpenCvSharp.Rect(
                     screenshot.Width / 4,
                     screenshot.Height - 400,
                     screenshot.Width / 2,

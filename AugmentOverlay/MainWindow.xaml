@@ -1,0 +1,26 @@
+<Window x:Class="AugmentOverlay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LoL ARAM Augment Overlay" Height="600" Width="800"
+        Background="#1e1e1e" Foreground="#ffffff"
+        WindowStyle="None" AllowsTransparency="True" 
+        Topmost="True" ShowInTaskbar="False">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="ARAM Augment Overlay" FontSize="24" FontWeight="Bold" Foreground="#0099ff" TextAlignment="Center" Margin="0,0,0,20"/>
+            
+            <TextBlock Text="Waiting for augment selection..." FontSize="14" TextAlignment="Center" Margin="0,0,0,20" Foreground="#cccccc"/>
+            
+            <Border BorderBrush="#0099ff" BorderThickness="2" Padding="20" CornerRadius="5">
+                <StackPanel>
+                    <TextBlock Text="Champion:" FontSize="12" Foreground="#888888"/>
+                    <TextBlock x:Name="ChampionName" Text="Detecting..." FontSize="16" FontWeight="Bold" Foreground="#00ff00" Margin="0,5,0,15"/>
+                    
+                    <TextBlock Text="Recommended Augment:" FontSize="12" Foreground="#888888"/>
+                    <TextBlock x:Name="AugmentName" Text="--" FontSize="16" FontWeight="Bold" Foreground="#ffaa00" Margin="0,5,0,10"/>
+                    <TextBlock x:Name="AugmentDesc" Text="--" FontSize="11" Foreground="#cccccc" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>

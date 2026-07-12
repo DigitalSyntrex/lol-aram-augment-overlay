@@ -1,0 +1,71 @@
+{
+  "Aatrox": [
+    {
+      "championId": "Aatrox",
+      "augmentId": "bloodletting",
+      "priority": 9.5,
+      "name": "Bloodletting",
+      "description": "Gain bonus attack damage and healing from damage dealt"
+    },
+    {
+      "championId": "Aatrox",
+      "augmentId": "lifesteal",
+      "priority": 9.0,
+      "name": "Lifesteal",
+      "description": "Gain bonus lifesteal on all damage"
+    },
+    {
+      "championId": "Aatrox",
+      "augmentId": "haste",
+      "priority": 8.5,
+      "name": "Ability Haste",
+      "description": "Gain ability haste"
+    }
+  ],
+  "Ahri": [
+    {
+      "championId": "Ahri",
+      "augmentId": "ability_power",
+      "priority": 9.5,
+      "name": "Ability Power Boost",
+      "description": "Gain bonus ability power"
+    },
+    {
+      "championId": "Ahri",
+      "augmentId": "mana_pool",
+      "priority": 9.0,
+      "name": "Mana Pool Expansion",
+      "description": "Increase maximum mana"
+    },
+    {
+      "championId": "Ahri",
+      "augmentId": "haste",
+      "priority": 8.5,
+      "name": "Ability Haste",
+      "description": "Gain ability haste"
+    }
+  ],
+  "Akali": [
+    {
+      "championId": "Akali",
+      "augmentId": "ability_power",
+      "priority": 9.5,
+      "name": "Ability Power Boost",
+      "description": "Gain bonus ability power"
+    },
+    {
+      "championId": "Akali",
+      "augmentId": "pen_magic",
+      "priority": 9.0,
+      "name": "Magic Penetration",
+      "description": "Gain magic penetration"
+    },
+    {
+      "championId": "Akali",
+      "augmentId": "haste",
+      "priority": 8.5,
+      "name": "Ability Haste",
+      "description": "Gain ability haste"
+    }
+  ]
+}

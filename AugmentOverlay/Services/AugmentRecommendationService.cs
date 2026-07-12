@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using AugmentOverlay.Models;
@@ -8,7 +9,7 @@ namespace AugmentOverlay.Services
 {
     public class AugmentRecommendationService
     {
-        private Dictionary<string, List<AugmentRecommendation>> _recommendations;
+        private Dictionary<string, List<AugmentRecommendation>>? _recommendations;
 
         public AugmentRecommendationService()
         {
@@ -41,7 +42,7 @@ namespace AugmentOverlay.Services
 
         public AugmentRecommendation? GetBestAugment(string? championName, List<Augment> availableAugments)
         {
-            if (string.IsNullOrEmpty(championName) || availableAugments == null || availableAugments.Count == 0)
+            if (string.IsNullOrEmpty(championName) || availableAugments == null || availableAugments.Count == 0 || _recommendations == null)
             {
                 return null;
             }
